@@ -16,8 +16,8 @@
 
 package de.roderick.weberknecht;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +25,14 @@ import java.util.List;
 public class WebSocketReceiver
 		extends Thread
 {
-	private DataInputStream input = null;
+	private InputStream input = null;
 	private WebSocket websocket = null;
 	private WebSocketEventHandler eventHandler = null;
 
 	private volatile boolean stop = false;
 
 	
-	public WebSocketReceiver(DataInputStream input, WebSocket websocket)
+	public WebSocketReceiver(InputStream input, WebSocket websocket)
 	{
 		this.input = input;
 		this.websocket = websocket;
