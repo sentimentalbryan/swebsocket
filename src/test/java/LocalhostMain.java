@@ -45,7 +45,7 @@ public class LocalhostMain {
 					System.out.println("--close");
 				}
 				@Override
-				public void onError() {
+				public void onError(Throwable t) {
 					System.out.println("--onError");
 				}
 				@Override

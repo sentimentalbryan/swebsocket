@@ -3,9 +3,6 @@ weberknecht - Java WebSocket Client Library
 
 Weberknecht is a Java implementation of the client side of the WebSocket Protocol for use in Java applications.
 
-Requirements
-------------
- * Apache Commons Codec 1.6
 
 Usage
 -----
