@@ -30,6 +30,7 @@ class SWebsocket(val w: WebSocket) extends Actor {
   }
   
   def act() = {
+    
   }
 
   def connect() = {
@@ -62,22 +63,22 @@ object SWebsocket {
   }
   private val defaulthandle = new WebSocketEventHandler() {
     def onOpen() = {
-      System.out.println("--open");
+      System.err.println("default-- open");
     }
     def onMessage(message: WebSocketMessage) = {
-      System.out.println("--received message: " + message.getText())
+      System.err.println("default-- received message: " + message.getText())
     }
     def onClose() = {
-      System.out.println("--close")
+      System.err.println("default-- close")
     }
     def onError(t: Throwable) = {
-      System.out.println("--onError")
+      System.err.println("default-- onError")
     }
     def onPing() = {
-      System.out.println("--onPing")
+      System.err.println("default-- onPing")
     }
     def onPong() = {
-      System.out.println("--onPong")
+      System.err.println("default-- onPong")
     }
   }
 

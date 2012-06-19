@@ -15,12 +15,14 @@ object LocalhostSWebsocketMain {
     val openHandle = () => { println("opened") }
     val mReg = """.*msg_([0-9]*).*""" r
     val latch1 = new CountDownLatch(3)
+    val latch2 = new CountDownLatch(3)
     
     val msgHandle = (s: String) => {
       println(s)
       s match {
         case mReg(id) => id.toInt match {
           case 1 => latch1.countDown()
+          case 2 => latch2.countDown()
         }
         case _ => throw new RuntimeException("bad message")
       }
@@ -56,7 +58,9 @@ object LocalhostSWebsocketMain {
     Range(1, 3).foreach(_ => ws.send("msg_1"))
     latch1.await()
     ws.close()
-    //    ws.connect()
-    //    ws.close()
+    ws.connect()
+    Range(1, 3).foreach(_ => ws.send("msg_2"))
+    latch2.await()
+    ws.close()
   }
 }  
