@@ -42,30 +42,25 @@ public class WebSocketReceiver
 
 	public void run()
 	{
+		boolean frameStart = false;
 		List<Byte> messageBytes = new ArrayList<Byte>();
 
 		while (!stop) {
 			try {
-				byte b = input.readByte();
-				byte opcode = (byte) (b & 0xf);
-				byte length = input.readByte();
-				int payload_length = 0;
-				if (length < 126) {
-					payload_length = length;
+				int b = input.read();
+				if (b == 0x00) {
+					frameStart = true;
+				} else if ((b == 0xff) && frameStart) {
+					frameStart = false;
+					Byte[] message = messageBytes.toArray(new Byte[messageBytes
+							.size()]);
+					eventHandler.onMessage(new WebSocketMessage(message));
+					messageBytes.clear();
+				} else if (frameStart) {
+					messageBytes.add((byte) b);
+				} else if (b == -1) {
+					handleError();
 				}
-				else if (length == 126) {
-					// TODO read 2 byte length field
-				}
-				else if (length == 127) {
-					// TODO read 8 byte length field
-				}
-				for (int i = 0; i < payload_length; i++) {
-					messageBytes.add(input.readByte());
-				}
-				Byte[] message = messageBytes.toArray(new Byte[messageBytes.size()]);
-				WebSocketMessage ws_message = new WebSocketMessage(message);
-				eventHandler.onMessage(ws_message);
-				messageBytes.clear();
 			}
 			catch (IOException ioe) {
 				handleError();

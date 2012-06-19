@@ -25,6 +25,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -32,7 +33,7 @@ import javax.net.ssl.SSLSocketFactory;
 public class WebSocket
 {
 	private static final String GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-	private static final int VERSION = 13;
+	public static final int VERSION = 13;
 	
     static final byte OPCODE_TEXT = 0x1;
     static final byte OPCODE_BINARY = 0x2;
@@ -53,21 +54,36 @@ public class WebSocket
 	private WebSocketHandshake handshake = null;
 	
 	
+	private String header = "";
+	
 	public WebSocket(URI url)
 			throws WebSocketException
 	{
-		this(url, null);
+		this(url, VERSION , new HashMap<String,String>());
 	}
 	
-
-	public WebSocket(URI url, String protocol)
+	public WebSocket(URI url, int protocol)
 			throws WebSocketException
 	{
 		this.url = url;
-		handshake = new WebSocketHandshake(url, protocol, null);
+		handshake = new WebSocketHandshake(url, protocol, null,new HashMap<String,String>());
+	}
+	public WebSocket(URI url, Map<String, String> headers)
+			throws WebSocketException
+	{
+		this.url = url;
+		handshake = new WebSocketHandshake(url, VERSION, null,headers);
 	}
 	
-
+	public WebSocket(URI url, int protocol,Map<String, String> headers)
+			throws WebSocketException
+	{
+		this.url = url;
+		handshake = new WebSocketHandshake(url, protocol, null,headers);
+	}
+	
+	
+	
 	public void setEventHandler(WebSocketEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
@@ -154,11 +170,63 @@ public class WebSocket
 		}
 		
 		try {
-			this.send_frame(OPCODE_TEXT, false, data.getBytes());
+			//this.send_frame(OPCODE_TEXT, false, data.getBytes(("UTF-8")));
+			
+			output.write(0x00);
+			output.write(data.getBytes(("UTF-8")));
+			output.write(0xff);
+			output.flush();
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+//	@Override
+//	public synchronized void send(String data) throws WebSocketException {
+//		if (!connected) {
+//			eventHandler.onError(
+//					new WebSocketException(
+//							"error while sending text data: not connected"))
+//			;
+//			return;
+//		}
+//		try {
+//			output.write(0x00);
+//			output.write(data.getBytes(("UTF-8")));
+//			output.write(0xff);
+//			output.flush();
+//		} catch (UnsupportedEncodingException uee) {
+//			throw new WebSocketException(
+//					"error while sending text data: unsupported encoding", uee);
+//		} catch (IOException ioe) {
+//			eventHandler.onError(new WebSocketException("error while sending text data", ioe));
+//		}
+//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	private synchronized void send_frame(byte opcode, boolean masking, byte[] data)

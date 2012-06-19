@@ -21,6 +21,8 @@ public interface WebSocketEventHandler
 {
 	public void onOpen();
 	
+	public void onError();
+	
 	
 	public void onMessage(WebSocketMessage message);
 	
