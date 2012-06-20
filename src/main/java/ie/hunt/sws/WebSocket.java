@@ -14,7 +14,7 @@
  *  limitations under the License. 
  */
 
-package de.roderick.weberknecht;
+package ie.hunt.sws;
 
 import java.io.DataInputStream;
 import java.io.IOException;

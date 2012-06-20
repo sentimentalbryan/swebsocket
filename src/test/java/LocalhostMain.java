@@ -1,11 +1,10 @@
+
+
+import ie.hunt.sws.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import de.roderick.weberknecht.WebSocket;
-import de.roderick.weberknecht.WebSocketEventHandler;
-import de.roderick.weberknecht.WebSocketException;
-import de.roderick.weberknecht.WebSocketMessage;
 
 public class LocalhostMain {
 	/**

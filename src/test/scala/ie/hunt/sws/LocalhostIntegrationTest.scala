@@ -1,23 +1,20 @@
-package de.rbaier.weberknecht
+package ie.hunt.swebsocket
 
 import java.net.URI
-import de.roderick.weberknecht.SWebsocket
-import de.roderick.weberknecht.WebSocketMessage
-import de.roderick.weberknecht.WebSocketEventHandler
 import java.util.concurrent.CountDownLatch
-
 import java.util.Date
 import java.io.File
 import scala.Option.option2Iterable
 import scala.xml.Elem
 import scala.xml.NodeBuffer
 import scala.xml.XML
-
 import org.junit.runner.RunWith
 import org.specs.runner.JUnit
 import org.specs.Specification
 import org.specs.SpecificationWithJUnit
 import org.specs.runner.JUnitSuiteRunner
+import ie.hunt.sws.WebSocketMessage
+import ie.hunt.sws.SWebsocket
 
 /**
  * Specs test of JSON parsing functionality
@@ -26,7 +23,7 @@ import org.specs.runner.JUnitSuiteRunner
 @RunWith(classOf[JUnitSuiteRunner])
 class LocalhostIntegrationTest extends Specification with JUnit {
 
-  "rest operations" should {
+  "should be able to " should {
     "parse a query add instruction correctly" in {
 
       val uri = new URI("ws://127.0.0.1:8080/websocket");

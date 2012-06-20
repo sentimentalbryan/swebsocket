@@ -14,30 +14,32 @@
  *  limitations under the License. 
  */
 
-package de.roderick.weberknecht;
+package ie.hunt.sws;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 
-public class WebSocketIOException
-		extends WebSocketException
+public class WebSocketMessage
 {
-	private static final long serialVersionUID = 1L;
+	private Byte[] message;
 
 
-	public WebSocketIOException(String message)
+	public WebSocketMessage(final Byte[] message)
 	{
-		super(message);
+		this.message = message;
 	}
 	
-	
-	public WebSocketIOException(String message, Throwable t)
+	public String getText()
 	{
-		super(message, t);
-	}
-
-
-	public WebSocketIOException(IOException e) {
-		super("",e);
+		byte[] message = new byte[this.message.length];
+		for (int i = 0; i < this.message.length; i++) {
+			message[i] = this.message[i];
+		}
+		try {
+			return new String(message, "UTF-8");
+		}
+		catch (UnsupportedEncodingException uee) {
+			return null;
+		}
 	}
 }

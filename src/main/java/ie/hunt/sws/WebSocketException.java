@@ -13,12 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
-package de.roderick.weberknecht;
-public class NotConnectedException extends WebSocketException {
-	
-	public NotConnectedException(String message) {
+
+package ie.hunt.sws;
+
+
+public class WebSocketException
+		extends Exception
+{
+	private static final long serialVersionUID = 1L;
+
+
+	public WebSocketException(String message)
+	{
 		super(message);
 	}
-
-	private static final long serialVersionUID = 1L;
+	
+	
+	public WebSocketException(String message, Throwable t)
+	{
+		super(message, t);
+	}
 }

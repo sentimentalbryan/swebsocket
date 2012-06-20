@@ -14,7 +14,7 @@
  *  limitations under the License. 
  */
 
-package de.roderick.weberknecht
+package ie.hunt.sws
 
 import java.net.URI
 import java.net.URISyntaxException
