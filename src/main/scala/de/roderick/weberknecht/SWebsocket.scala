@@ -16,28 +16,54 @@
 
 package de.roderick.weberknecht
 
-
 import java.net.URI
 import java.net.URISyntaxException
 import scala.collection.JavaConversions._
 import scala.actors.Actor
 import scala.actors.Actor._
 
-class SWebsocket(val w: WebSocket) extends Actor {
-  
-  def handler() = {
-    w.getEventHandler()
+class SWebsocket(val w: WebSocket) {
+
+  var openHandle: Function0[Unit] = () => { println("default-- open") }
+  var closeHandle: Function0[Unit] = () => { println("default-- close") }
+  var errorHandle: Function1[Throwable, Unit] = (t: Throwable) => {
+    println(format("%s:%s", "default-- onError", t.toString()))
+    println();
   }
-  
-  def act() = {
-    
+  var msgHandle: Function1[WebSocketMessage, Unit] = (message: WebSocketMessage) => { println("default-- received message: " + message.getText()) }
+
+  private val defaulthandle = new WebSocketEventHandler() {
+    def onOpen() = {
+      openHandle()
+    }
+    def onMessage(message: WebSocketMessage) = {
+      msgHandle(message)
+    }
+    def onClose() = {
+      closeHandle()
+    }
+    def onError(t: Throwable) = {
+      errorHandle(t)
+    }
+    def onPing() = {
+      System.err.println("default-- onPing")
+    }
+    def onPong() = {
+      System.err.println("default-- onPong")
+    }
   }
+
+  def addErrorHandler(handler: Function1[Throwable, Unit]): SWebsocket = { this.errorHandle = handler; this }
+  def addOpenHandler(handler: Function0[Unit]): SWebsocket = { this.openHandle = handler; this }
+  def addCloseHandler(handler: Function0[Unit]): SWebsocket = { this.closeHandle = handler; this }
+  def addMessageHandler(handler: Function1[WebSocketMessage, Unit]): SWebsocket = { this.msgHandle = handler; this }
 
   def connect() = {
     try {
+      w.setEventHandler(defaulthandle)
       w.connect()
     } catch {
-      case e => { handler().onError(e) }
+      case e => { defaulthandle.onError(e) }
     }
   }
   def close() = {
@@ -47,39 +73,15 @@ class SWebsocket(val w: WebSocket) extends Actor {
     try {
       w.send(s)
     } catch {
-      case e => handler().onError(e)
+      case e => defaulthandle.onError(e)
     }
   }
 }
 
 object SWebsocket {
-  def create(headers: Map[String, String], url: URI, handler: Option[WebSocketEventHandler]): SWebsocket = {
+  def create(headers: Map[String, String], url: URI): SWebsocket = {
     val websocket = new WebSocket(url, headers);
-    handler match {
-      case Some(handler) => websocket.setEventHandler(handler);
-      case None => websocket.setEventHandler(defaulthandle)
-    }
     new SWebsocket(websocket)
-  }
-  private val defaulthandle = new WebSocketEventHandler() {
-    def onOpen() = {
-      System.err.println("default-- open");
-    }
-    def onMessage(message: WebSocketMessage) = {
-      System.err.println("default-- received message: " + message.getText())
-    }
-    def onClose() = {
-      System.err.println("default-- close")
-    }
-    def onError(t: Throwable) = {
-      System.err.println("default-- onError")
-    }
-    def onPing() = {
-      System.err.println("default-- onPing")
-    }
-    def onPong() = {
-      System.err.println("default-- onPong")
-    }
   }
 
 }

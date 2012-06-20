@@ -162,7 +162,7 @@ public class WebSocketHandshake {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			return md.digest(bytes);
 		} catch (NoSuchAlgorithmException e) {
-			return null;
+			throw new UnsupportedOperationException(e);
 		}
 	}
 	private int rand(int min, int max) {

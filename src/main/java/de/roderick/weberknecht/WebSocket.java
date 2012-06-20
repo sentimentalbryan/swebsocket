@@ -1,6 +1,6 @@
 /*
- *  Copyright (C) 2012 Roderick Baier
  *  
+ *  Copyright (C) 2012 Roderick Baier
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -166,102 +166,25 @@ public class WebSocket
 			throws WebSocketException
 	{
 		if (!connected) {
-			throw new WebSocketException("error while sending text data: not connected");
+			throw new NotConnectedException("error while sending text data: not connected");
 		}
 		
 		try {
-			//this.send_frame(OPCODE_TEXT, false, data.getBytes(("UTF-8")));
-			
+			//This code didn't work, took code from Datasift instead.
+			//this.send_frame((byte) 0x00, false, data.getBytes(("UTF-8")));
 			output.write(0x00);
 			output.write(data.getBytes(("UTF-8")));
 			output.write(0xff);
 			output.flush();
-			
-			
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new WebSocketIOException(e);
 		}
 	}
 
-//	@Override
-//	public synchronized void send(String data) throws WebSocketException {
-//		if (!connected) {
-//			eventHandler.onError(
-//					new WebSocketException(
-//							"error while sending text data: not connected"))
-//			;
-//			return;
-//		}
-//		try {
-//			output.write(0x00);
-//			output.write(data.getBytes(("UTF-8")));
-//			output.write(0xff);
-//			output.flush();
-//		} catch (UnsupportedEncodingException uee) {
-//			throw new WebSocketException(
-//					"error while sending text data: unsupported encoding", uee);
-//		} catch (IOException ioe) {
-//			eventHandler.onError(new WebSocketException("error while sending text data", ioe));
-//		}
-//	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	private synchronized void send_frame(byte opcode, boolean masking, byte[] data)
 			throws WebSocketException, IOException
 	{
-		ByteBuffer frame = ByteBuffer.allocate(data.length + 2);
-		byte fin = (byte) 0x80;
-		byte x = (byte) (fin | opcode);
-		frame.put(x);
-		int length = data.length;
-		int length_field = 0;
-		
-		if (length < 126) {
-			if (masking) {
-				length = 0x80 | length;
-			}
-			frame.put((byte) length);
-		}
-		else if (length <= 65535) {
-			length_field = 126;
-			if (masking) {
-				length_field = 0x80 | length_field;
-			}
-			frame.put((byte) length_field);
-			frame.put((byte) length);
-		}
-		else {
-			length_field = 127;
-			if (masking) {
-				length_field = 0x80 | length_field;
-			}
-			frame.put((byte) length_field);
-			frame.put((byte) length);
-		}
-		frame.put(data);
+		ByteBuffer frame = FrameUtil.generateFrame(opcode, masking, data);
 		output.write(frame.array());
 		output.flush();
 	}

@@ -13,33 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
-
 package de.roderick.weberknecht;
-
-import java.io.UnsupportedEncodingException;
-
-
-public class WebSocketMessage
-{
-	private Byte[] message;
-
-
-	public WebSocketMessage(final Byte[] message)
-	{
-		this.message = message;
-	}
+public class NotConnectedException extends WebSocketException {
 	
-	public String getText()
-	{
-		byte[] message = new byte[this.message.length];
-		for (int i = 0; i < this.message.length; i++) {
-			message[i] = this.message[i];
-		}
-		try {
-			return new String(message, "UTF-8");
-		}
-		catch (UnsupportedEncodingException uee) {
-			return null;
-		}
+	public NotConnectedException(String message) {
+		super(message);
 	}
+
+	private static final long serialVersionUID = 1L;
 }

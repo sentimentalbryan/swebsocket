@@ -16,30 +16,28 @@
 
 package de.roderick.weberknecht;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 
 
-public class WebSocketMessage
+public class WebSocketIOException
+		extends WebSocketException
 {
-	private Byte[] message;
+	private static final long serialVersionUID = 1L;
 
 
-	public WebSocketMessage(final Byte[] message)
+	public WebSocketIOException(String message)
 	{
-		this.message = message;
+		super(message);
 	}
 	
-	public String getText()
+	
+	public WebSocketIOException(String message, Throwable t)
 	{
-		byte[] message = new byte[this.message.length];
-		for (int i = 0; i < this.message.length; i++) {
-			message[i] = this.message[i];
-		}
-		try {
-			return new String(message, "UTF-8");
-		}
-		catch (UnsupportedEncodingException uee) {
-			return null;
-		}
+		super(message, t);
+	}
+
+
+	public WebSocketIOException(IOException e) {
+		super("",e);
 	}
 }
