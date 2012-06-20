@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
-package ie.hunt.sws;
+package uk.co.binarytemple.sws;
 public class NotConnectedException extends WebSocketException {
 	
 	public NotConnectedException(String message) {

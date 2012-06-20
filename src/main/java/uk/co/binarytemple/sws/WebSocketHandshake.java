@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
-package ie.hunt.sws;
+package uk.co.binarytemple.sws;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;

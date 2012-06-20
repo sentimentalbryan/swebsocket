@@ -1,6 +1,6 @@
 
 
-import ie.hunt.sws.*;
+import uk.co.binarytemple.sws.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;

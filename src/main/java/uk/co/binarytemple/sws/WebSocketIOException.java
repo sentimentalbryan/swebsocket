@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2012 Roderick Baier
+ *  Copyright (C) 2011 Roderick Baier
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,24 +14,30 @@
  *  limitations under the License. 
  */
 
-package ie.hunt.sws;
+package uk.co.binarytemple.sws;
+
+import java.io.IOException;
 
 
-public interface WebSocketEventHandler
+public class WebSocketIOException
+		extends WebSocketException
 {
-	public void onOpen();
-	
-	public void onError(Throwable t);
-	
-	
-	public void onMessage(WebSocketMessage message);
-	
-	
-	public void onClose();
+	private static final long serialVersionUID = 1L;
+
+
+	public WebSocketIOException(String message)
+	{
+		super(message);
+	}
 	
 	
-	public void onPing();
-	
-	
-	public void onPong();
+	public WebSocketIOException(String message, Throwable t)
+	{
+		super(message, t);
+	}
+
+
+	public WebSocketIOException(IOException e) {
+		super("",e);
+	}
 }

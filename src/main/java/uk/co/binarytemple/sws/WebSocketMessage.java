@@ -14,7 +14,7 @@
  *  limitations under the License. 
  */
 
-package ie.hunt.sws;
+package uk.co.binarytemple.sws;
 
 import java.io.UnsupportedEncodingException;
 

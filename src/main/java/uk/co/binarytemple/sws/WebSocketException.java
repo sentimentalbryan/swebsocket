@@ -14,7 +14,7 @@
  *  limitations under the License. 
  */
 
-package ie.hunt.sws;
+package uk.co.binarytemple.sws;
 
 
 public class WebSocketException

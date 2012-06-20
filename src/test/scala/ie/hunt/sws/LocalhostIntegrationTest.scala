@@ -1,4 +1,4 @@
-package ie.hunt.swebsocket
+package uk.co.binarytemple.swebsocket
 
 import java.net.URI
 import java.util.concurrent.CountDownLatch
@@ -13,8 +13,8 @@ import org.specs.runner.JUnit
 import org.specs.Specification
 import org.specs.SpecificationWithJUnit
 import org.specs.runner.JUnitSuiteRunner
-import ie.hunt.sws.WebSocketMessage
-import ie.hunt.sws.SWebsocket
+import uk.co.binarytemple.sws.WebSocketMessage
+import uk.co.binarytemple.sws.SWebsocket
 
 /**
  * Specs test of JSON parsing functionality
