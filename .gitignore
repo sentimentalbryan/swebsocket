@@ -1,4 +1,4 @@
 target
 .scala_dependencies
-src/test/java/BlahMain.java
 *.*~
+*.releaseBackup
