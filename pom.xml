@@ -27,12 +27,12 @@
 		<repository>
 			<id>fakerepo</id>
 			<name>Localfs</name>
-			<url>file:///c:/svnFakeRepo/repo</url>
+			<url>file://tmp/svnFakeRepo/repo</url>
 		</repository>
 		<snapshotRepository>
 			<id>fakesnapshotrepo</id>
 			<name>Localfs</name>
-			<url>file:///c:/svnFakeRepo/snapshots</url>
+			<url>file://tmp/svnFakeRepo/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<name>SWebsocket</name>
@@ -85,11 +85,13 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.5</version>
+      <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.scalamock</groupId>
 			<artifactId>scalamock-core_2.9.1</artifactId>
 			<version>2.3</version>
+      <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
