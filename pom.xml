@@ -27,12 +27,12 @@
 		<repository>
 			<id>fakerepo</id>
 			<name>Localfs</name>
-			<url>file://tmp/svnFakeRepo/repo</url>
+			<url>file:///tmp/localrepo/repo</url>
 		</repository>
 		<snapshotRepository>
 			<id>fakesnapshotrepo</id>
 			<name>Localfs</name>
-			<url>file://tmp/svnFakeRepo/snapshots</url>
+			<url>file:///tmp/localrepo/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<name>SWebsocket</name>
