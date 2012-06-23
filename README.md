@@ -1,4 +1,4 @@
-weberknecht - Java WebSocket Client Library
+SWebsocket - Scala WebSocket Client Library
 ===========================================
 
 SWebsocket is a blocking websocket client with a handy Scala wrapper.
