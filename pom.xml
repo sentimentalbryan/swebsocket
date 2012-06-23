@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.binarytemple</groupId>
 	<artifactId>sws</artifactId>
-	<version>0.0.3.3-SNAPSHOT</version>
+	<version>0.0.3.3</version>
 	<scm>
 		<connection>scm:git:git@github.com:sentimentalbryan/swebsocket.git</connection>
 		<url>scm:git:git@github.com:sentimentalbryan/swebsocket.git</url>
 		<developerConnection>scm:git:git@github.com:sentimentalbryan/swebsocket.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>sws-0.0.3.3</tag>
 	</scm>
 	<url>https://github.com/sentimentalbryan/swebsocket</url>
 	<inceptionYear>2012</inceptionYear>
@@ -45,6 +46,12 @@
 		</developer>
 	</developers>
 	<dependencies>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-compiler</artifactId>
+			<version>2.9.1</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.scala-tools.testing</groupId>
 			<artifactId>specs_2.9.1</artifactId>
@@ -85,13 +92,13 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.5</version>
-      <scope>test</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.scalamock</groupId>
 			<artifactId>scalamock-core_2.9.1</artifactId>
 			<version>2.3</version>
-      <scope>test</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
