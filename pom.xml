@@ -5,14 +5,11 @@
 	<groupId>uk.co.binarytemple</groupId>
 	<artifactId>sws</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-
 	<scm>
 		<connection>scm:git@github.com:sentimentalbryan/swebsocket.git</connection>
 		<url>scm:git@github.com:sentimentalbryan/swebsocket.git</url>
 		<developerConnection>scm:git@github.com:sentimentalbryan/swebsocket.git</developerConnection>
 	</scm>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.scala-tools.testing</groupId>
