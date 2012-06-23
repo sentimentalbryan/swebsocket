@@ -1,7 +1,7 @@
 package uk.co.binarytemple.swebsocket
 
-import java.net.URI
 import java.util.concurrent.CountDownLatch
+import java.net.URI
 import java.util.Date
 import java.io.File
 import scala.Option.option2Iterable
@@ -15,10 +15,6 @@ import org.specs.SpecificationWithJUnit
 import org.specs.runner.JUnitSuiteRunner
 import uk.co.binarytemple.sws.WebSocketMessage
 import uk.co.binarytemple.sws.SWebsocket
-
-/**
- * Specs test of JSON parsing functionality
- */
 
 @RunWith(classOf[JUnitSuiteRunner])
 class LocalhostIntegrationTest extends Specification with JUnit {
@@ -51,7 +47,6 @@ class LocalhostIntegrationTest extends Specification with JUnit {
       }
 
       val ws = SWebsocket.create(headers, uri).addErrorHandler(failHandle).addOpenHandler(openHandle).addCloseHandler(closeHandle).addMessageHandler(msgHandle)
-      
 
       for (i <- Range(0, 100)) {
         val l = new CountDownLatch(3)
@@ -62,14 +57,6 @@ class LocalhostIntegrationTest extends Specification with JUnit {
         l.await()
         ws.close()
       }
-
-//      Range(1, 3).foreach(_ => ws.send("msg_1"))
-//      latch1.await()
-//      ws.close()
-//      ws.connect()
-//      Range(1, 3).foreach(_ => ws.send("msg_2"))
-//      latch2.await()
-//      ws.close()
       true must_== true
     }
   }
