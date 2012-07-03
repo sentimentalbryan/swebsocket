@@ -28,12 +28,17 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class WebSocket
 {
-	private static final String GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+	//TODO: Use in auth...
+	//private static final String GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 	public static final int VERSION = 13;
+	
+	Logger logger = LoggerFactory.getLogger(WebSocket.class);
 	
     static final byte OPCODE_TEXT = 0x1;
     static final byte OPCODE_BINARY = 0x2;
@@ -82,7 +87,9 @@ public class WebSocket
 		handshake = new WebSocketHandshake(url, protocol, null,headers);
 	}
 	
-	
+	public boolean isConnected() {
+		return connected;
+	}
 	
 	public void setEventHandler(WebSocketEventHandler eventHandler)
 	{
@@ -101,7 +108,8 @@ public class WebSocket
 	{
 		try {
 			if (connected) {
-				throw new WebSocketException("already connected");
+				logger.warn("attempting to connect - while already connected");
+				return;
 			}
 			
 			socket = createSocket();
@@ -153,9 +161,6 @@ public class WebSocket
 			connected = true;
 			eventHandler.onOpen();
 		}
-		catch (WebSocketException wse) {
-			throw wse;
-		}
 		catch (IOException ioe) {
 			throw new WebSocketException("error while connecting: " + ioe.getMessage(), ioe);
 		}
@@ -168,7 +173,6 @@ public class WebSocket
 		if (!connected) {
 			throw new NotConnectedException("error while sending text data: not connected");
 		}
-		
 		try {
 			//This code didn't work, took code from Datasift instead.
 			//this.send_frame((byte) 0x00, false, data.getBytes(("UTF-8")));
@@ -198,7 +202,7 @@ public class WebSocket
 			}
 		}
 		catch (WebSocketException wse) {
-			wse.printStackTrace();
+			logger.error("receiver error",wse);
 		}
 	}
 	
@@ -225,11 +229,11 @@ public class WebSocket
 	private synchronized void sendCloseHandshake()
 		throws WebSocketException
 	{
+		logger.debug("Sending close");
 		if (!connected) {
 			throw new WebSocketException("error while sending close handshake: not connected");
 		}
 		
-		System.out.println("Sending close");
 		if (!connected) {
 			throw new WebSocketException("error while sending close");
 		}
@@ -237,7 +241,7 @@ public class WebSocket
 		try {
 			this.send_frame(OPCODE_CLOSE, false, new byte[0]);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("error closing", e);
 		}
 
 		connected = false;

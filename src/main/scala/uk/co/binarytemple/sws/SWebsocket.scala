@@ -21,15 +21,25 @@ import java.net.URISyntaxException
 import scala.collection.JavaConversions._
 import scala.actors.Actor
 import scala.actors.Actor._
+import org.slf4j.LoggerFactory
+
+object SWebsocket {
+  val logger = LoggerFactory.getLogger(SWebsocket.getClass);
+  def create(headers: Map[String, String], url: URI): SWebsocket = {
+    val websocket = new WebSocket(url, headers);
+    new SWebsocket(websocket)
+  }
+}
 
 class SWebsocket(val w: WebSocket) {
+  import SWebsocket._
 
   var openHandle: Function0[Unit] = () => { println("default-- open") }
   var closeHandle: Function0[Unit] = () => { println("default-- close") }
   var errorHandle: Function1[Throwable, Unit] = (t: Throwable) => {
-    println(format("%s:%s", "default-- onError", t.toString()))
-    println();
+    logger.warn("%s:%s".format("default-- onError", t.toString()))
   }
+  
   var msgHandle: Function1[WebSocketMessage, Unit] = (message: WebSocketMessage) => { println("default-- received message: " + message.getText()) }
 
   private val defaulthandle = new WebSocketEventHandler() {
@@ -46,10 +56,10 @@ class SWebsocket(val w: WebSocket) {
       errorHandle(t)
     }
     def onPing() = {
-      System.err.println("default-- onPing")
+    	logger.warn("default onPing handler")
     }
     def onPong() = {
-      System.err.println("default-- onPong")
+    	logger.warn("default onPong handler")
     }
   }
 
@@ -57,7 +67,8 @@ class SWebsocket(val w: WebSocket) {
   def addOpenHandler(handler: Function0[Unit]): SWebsocket = { this.openHandle = handler; this }
   def addCloseHandler(handler: Function0[Unit]): SWebsocket = { this.closeHandle = handler; this }
   def addMessageHandler(handler: Function1[WebSocketMessage, Unit]): SWebsocket = { this.msgHandle = handler; this }
-
+  def isConnected() = w.isConnected
+  
   def connect() = {
     try {
       w.setEventHandler(defaulthandle)
@@ -76,12 +87,4 @@ class SWebsocket(val w: WebSocket) {
       case e => defaulthandle.onError(e)
     }
   }
-}
-
-object SWebsocket {
-  def create(headers: Map[String, String], url: URI): SWebsocket = {
-    val websocket = new WebSocket(url, headers);
-    new SWebsocket(websocket)
-  }
-
 }
