@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.binarytemple</groupId>
 	<artifactId>sws</artifactId>
-	<version>0.0.3.11</version>
+	<version>0.0.3.12-SNAPSHOT</version>
 	<scm>
 		<connection>scm:git:git@github.com:sentimentalbryan/swebsocket.git</connection>
 		<url>scm:git:git@github.com:sentimentalbryan/swebsocket.git</url>
 		<developerConnection>scm:git:git@github.com:sentimentalbryan/swebsocket.git</developerConnection>
-		<tag>sws-0.0.3.11</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<url>https://github.com/sentimentalbryan/swebsocket</url>
 	<inceptionYear>2012</inceptionYear>
