@@ -106,6 +106,8 @@
 		</dependency>
 	</dependencies>
 	<build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -115,6 +117,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
+        <version>1.4</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -131,6 +134,7 @@
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
+         <version>3.0.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -190,8 +194,7 @@
 				</plugin>
 				<plugin>
           <groupId>net.alchim31.maven</groupId>
-          <artifactId>scala-mavenn-plugin</artifactId>
-          <version>3.0.2</version>
+          <artifactId>scala-maven-plugin</artifactId>
 					<executions>
 						<execution>
 							<id>compile</id>
