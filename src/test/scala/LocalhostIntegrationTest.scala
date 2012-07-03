@@ -1,20 +1,13 @@
-package uk.co.binarytemple.swebsocket
+
+import java.net.URI
 
 import java.util.concurrent.CountDownLatch
-import java.net.URI
-import java.util.Date
-import java.io.File
-import scala.Option.option2Iterable
-import scala.xml.Elem
-import scala.xml.NodeBuffer
-import scala.xml.XML
 import org.junit.runner.RunWith
+import org.specs.runner.JUnitSuiteRunner
 import org.specs.runner.JUnit
 import org.specs.Specification
-import org.specs.SpecificationWithJUnit
-import org.specs.runner.JUnitSuiteRunner
-import uk.co.binarytemple.sws.WebSocketMessage
 import uk.co.binarytemple.sws.SWebsocket
+import uk.co.binarytemple.sws.WebSocketMessage
 
 @RunWith(classOf[JUnitSuiteRunner])
 class LocalhostIntegrationTest extends Specification with JUnit {
@@ -36,7 +29,7 @@ class LocalhostIntegrationTest extends Specification with JUnit {
       val latch2 = new CountDownLatch(3)
 
       val msgHandle: Function1[WebSocketMessage, Unit] = (w: WebSocketMessage) => {
-        println(w.getText())
+        //println(w.getText())
         w.getText() match {
           case mReg(id) => id.toInt match {
             case 1 => latch1.countDown()
@@ -46,16 +39,33 @@ class LocalhostIntegrationTest extends Specification with JUnit {
         }
       }
 
-      val ws = SWebsocket.create(headers, uri).addErrorHandler(failHandle).addOpenHandler(openHandle).addCloseHandler(closeHandle).addMessageHandler(msgHandle)
+      val sws = SWebsocket.create(headers, uri).addErrorHandler(failHandle).addOpenHandler(openHandle).addCloseHandler(closeHandle).addMessageHandler(msgHandle)
 
       for (i <- Range(0, 100)) {
-        val l = new CountDownLatch(3)
-        val msgHandle: Function1[WebSocketMessage, Unit] = (w: WebSocketMessage) => {l.countDown()}
-        val nws = ws.addMessageHandler(msgHandle) 
+        println("a new session")
+        val l = new CountDownLatch(30)
+        val msgHandle: Function1[WebSocketMessage, Unit] = (w: WebSocketMessage) => { println("received:%s".format(w.getText)); l.countDown() }
+        val closeHandle: Function0[Unit] = () => {
+          println("I can handle close")
+          for { i <- 0l to 31 } { l.countDown }
+        }
+
+        val nws = sws.addMessageHandler(msgHandle).addCloseHandler(closeHandle)
+        val failHandle: Function1[Throwable, Unit] = (t: Throwable) => {
+          println("I can handle fail")
+          println(t.toString)
+          for { i <- 0l to 31 } { l.countDown }
+          Thread.sleep(1000)
+          nws.connect
+
+        }
+
+        nws.addErrorHandler(failHandle)
         nws.connect()
-        Range(1, 30).foreach(_ => ws.send("test"))
+        println("nws.isConnected = %b".format(nws.isConnected))
+        Range(1, 30).foreach(_ => sws.send("test"))
         l.await()
-        ws.close()
+        sws.close()
       }
       true must_== true
     }
