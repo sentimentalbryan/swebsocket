@@ -133,7 +133,8 @@ public class WebSocket {
 				}
 
 				for (String line : handshakeLines) {
-					System.out.println(line);
+					logger.debug(line);
+					
 				}
 				handshake.verifyServerStatusLine(handshakeLines.get(0));
 				handshakeLines.remove(0);

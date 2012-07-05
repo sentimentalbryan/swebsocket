@@ -34,13 +34,13 @@ object SWebsocket {
 class SWebsocket(val w: WebSocket) {
   import SWebsocket._
 
-  var openHandle: Function0[Unit] = () => { println("default-- open") }
-  var closeHandle: Function0[Unit] = () => { println("default-- close") }
+  var openHandle: Function0[Unit] = () => { logger.debug("default-- open") }
+  var closeHandle: Function0[Unit] = () => { logger.debug("default-- close") }
   var errorHandle: Function1[Throwable, Unit] = (t: Throwable) => {
     logger.warn("%s:%s".format("default-- onError", t.toString()))
   }
   
-  var msgHandle: Function1[WebSocketMessage, Unit] = (message: WebSocketMessage) => { println("default-- received message: " + message.getText()) }
+  var msgHandle: Function1[WebSocketMessage, Unit] = (message: WebSocketMessage) => { logger.debug("default-- received message: " + message.getText()) }
 
   private val defaulthandle = new WebSocketEventHandler() {
     def onOpen() = {
