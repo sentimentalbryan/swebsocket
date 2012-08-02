@@ -1,16 +1,18 @@
 
-import java.net.URI
 
+import java.net.URI
 import java.util.concurrent.CountDownLatch
 import org.junit.runner.RunWith
-import org.specs.runner.JUnitSuiteRunner
-import org.specs.runner.JUnit
-import org.specs.Specification
+import org.specs2.matcher._
+import org.specs2.runner.{ JUnitRunner }
+import org.specs2.runner.JUnitXmlRunner
+import org.specs2.mutable._
 import uk.co.binarytemple.sws.SWebsocket
 import uk.co.binarytemple.sws.WebSocketMessage
+import org.specs2.execute.Failure
 
-@RunWith(classOf[JUnitSuiteRunner])
-class LocalhostIntegrationTest extends Specification with JUnit {
+@RunWith(classOf[JUnitRunner])
+class LocalhostIntegrationTest extends org.specs2.runner.JUnitXmlRunner with Specification  {
 
   "should be able to " should {
     "parse a query add instruction correctly" in {
@@ -21,7 +23,7 @@ class LocalhostIntegrationTest extends Specification with JUnit {
       val openHandle: Function0[Unit] = () => { println("opened") }
       val closeHandle: Function0[Unit] = () => { println("closed") }
       val failHandle: Function1[Throwable, Nothing] = (t: Throwable) => {
-        fail(t.toString())
+        failure(t.toString())
       }
 
       val mReg = """.*msg_([0-9]*).*""" r
@@ -41,7 +43,7 @@ class LocalhostIntegrationTest extends Specification with JUnit {
 
       val sws = SWebsocket.create(headers, uri).addErrorHandler(failHandle).addOpenHandler(openHandle).addCloseHandler(closeHandle).addMessageHandler(msgHandle)
 
-      for (i <- Range(0, 100)) {
+      for (i <- Range(0, 5)) {
         println("a new session")
         val l = new CountDownLatch(30)
         val msgHandle: Function1[WebSocketMessage, Unit] = (w: WebSocketMessage) => { println("received:%s".format(w.getText)); l.countDown() }
@@ -57,13 +59,12 @@ class LocalhostIntegrationTest extends Specification with JUnit {
           for { i <- 0l to 31 } { l.countDown }
           Thread.sleep(1000)
           nws.connect
-
         }
 
         nws.addErrorHandler(failHandle)
         nws.connect()
         println("nws.isConnected = %b".format(nws.isConnected))
-        Range(1, 30).foreach(_ => sws.send("test"))
+        Range(1, 15).foreach(_ => sws.send("test"))
         l.await()
         sws.close()
       }
